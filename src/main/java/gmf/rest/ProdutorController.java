@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/produtor")
 public class ProdutorController {
@@ -34,7 +35,7 @@ public class ProdutorController {
     }
 
     @GetMapping("{id}")
-    public Produtor acharPorId(@PathVariable Integer id) {
+    public Produtor acharPorId(@PathVariable Long id) {
         return repository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produtor não encontrado"));
@@ -42,7 +43,7 @@ public class ProdutorController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletar(@PathVariable Integer id) {
+    public void deletar(@PathVariable Long id) {
         repository
                 .findById(id)
                 .map(produtor -> {
@@ -54,7 +55,7 @@ public class ProdutorController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizar(@PathVariable Integer id,
+    public void atualizar(@PathVariable Long id,
             @RequestBody @Valid Produtor produtorAtualizado) {
         repository
                 .findById(id)

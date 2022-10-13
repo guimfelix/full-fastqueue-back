@@ -51,6 +51,8 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  public static UserDetailsImpl userDetails2;
+
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -65,11 +67,14 @@ public class AuthController {
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
 
+    userDetails2 = userDetails;
+
     return ResponseEntity.ok(new JwtResponse(jwt,
         userDetails.getId(),
         userDetails.getUsername(),
         userDetails.getEmail(),
-        roles));
+        roles,
+        userDetails.getIsCadastrado()));
   }
 
   @PostMapping("/signup")
@@ -89,7 +94,7 @@ public class AuthController {
     // Create new user's account
     Usuario user = new Usuario(signUpRequest.getUsername(),
         signUpRequest.getEmail(),
-        encoder.encode(signUpRequest.getPassword()));
+        encoder.encode(signUpRequest.getPassword()), Boolean.FALSE);
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Papel> roles = new HashSet<>();

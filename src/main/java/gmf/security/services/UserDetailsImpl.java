@@ -22,18 +22,21 @@ public class UserDetailsImpl implements UserDetails {
 
   private String email;
 
+  private Boolean isCadastrado;
+
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(Long id, String username, String email, String password,
-      Collection<? extends GrantedAuthority> authorities) {
+      Collection<? extends GrantedAuthority> authorities, Boolean isCadastrado) {
     this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
     this.authorities = authorities;
+    this.isCadastrado = isCadastrado;
   }
 
   public static UserDetailsImpl build(Usuario user) {
@@ -46,7 +49,8 @@ public class UserDetailsImpl implements UserDetails {
         user.getUsername(),
         user.getEmail(),
         user.getPassword(),
-        authorities);
+        authorities,
+        user.getIsCadastrado());
   }
 
   @Override
@@ -90,6 +94,10 @@ public class UserDetailsImpl implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public Boolean getIsCadastrado() {
+    return isCadastrado;
   }
 
   @Override

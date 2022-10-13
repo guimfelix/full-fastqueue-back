@@ -13,9 +13,12 @@ public class Produtor {
     public Long id;
     public String nome;
     public String dataNascimento;
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public Endereco endereco;
-    @OneToMany
+    @OneToMany(mappedBy = "produtor", targetEntity = Evento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Evento> eventos;
     public String papel = "GERENTE";
+    @OneToOne(cascade = CascadeType.DETACH)
+    public Usuario usuario;
+
 }

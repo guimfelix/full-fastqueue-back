@@ -35,13 +35,16 @@ public class Usuario {
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Papel> roles = new HashSet<>();
 
+  private Boolean isCadastrado = false;
+
   public Usuario() {
   }
 
-  public Usuario(String username, String email, String password) {
+  public Usuario(String username, String email, String password, Boolean isCadastrado) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.isCadastrado = isCadastrado;
   }
 
   public Long getId() {
@@ -82,5 +85,13 @@ public class Usuario {
 
   public void setRoles(Set<Papel> roles) {
     this.roles = roles;
+  }
+
+  public void setIsCadastrado(Boolean isCadastrado) {
+    this.isCadastrado = isCadastrado;
+  }
+
+  public Boolean getIsCadastrado() {
+    return isCadastrado;
   }
 }
