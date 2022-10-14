@@ -5,11 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import gmf.dao.EspectadorDao;
 import gmf.model.Espectador;
 import gmf.repository.EspectadorRepository;
-import gmf.repository.UsuarioRepository;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,16 +18,15 @@ import java.util.List;
 public class EspectadorController {
 
     @Autowired
-    UsuarioRepository userRepository;
-
+    private final EspectadorDao espectadorDao;
+    @Autowired
     private final EspectadorRepository repository;
 
-    @Autowired
-    public EspectadorController(EspectadorRepository repository) {
+    public EspectadorController(EspectadorDao espectadorDao, EspectadorRepository repository) {
         this.repository = repository;
+        this.espectadorDao = espectadorDao;
     }
 
-    @Transactional
     @GetMapping
     public List<Espectador> obterTodos() {
         return repository.findAll();
@@ -37,10 +35,9 @@ public class EspectadorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Espectador salvar(@RequestBody @Valid Espectador espectador) {
-        return repository.save(espectador);
+        return espectadorDao.salvarEspectador(espectador);
     }
 
-    @Transactional
     @GetMapping("{id}")
     public Espectador acharPorId(@PathVariable Long id) {
         return repository
@@ -48,11 +45,10 @@ public class EspectadorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Espectador não encontrado"));
     }
 
-    @Transactional
     @GetMapping("usuario/{id}")
     public Espectador acharIdUsuarioPorId(@PathVariable Long id) {
-        return repository
-                .findByUsuario(id);
+        System.out.println(">>>>> usuario");
+        return espectadorDao.buscaEspectadorPorUsuarioId(id);
     }
 
     @DeleteMapping("{id}")

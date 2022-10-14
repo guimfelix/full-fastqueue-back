@@ -1,6 +1,7 @@
 package gmf.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,7 +33,7 @@ public class Espectador implements Serializable {
     public Endereco endereco;
     @JsonIgnore
     @ManyToMany
-    public List<Evento> eventos;
+    public List<Evento> eventos = new ArrayList<>();
     public String papel = "USER";
     @OneToOne(cascade = CascadeType.DETACH)
     public Usuario usuario;

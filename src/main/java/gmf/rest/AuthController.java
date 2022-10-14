@@ -51,8 +51,6 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  public static UserDetailsImpl userDetails2;
-
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -66,8 +64,6 @@ public class AuthController {
     List<String> roles = userDetails.getAuthorities().stream()
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
-
-    userDetails2 = userDetails;
 
     return ResponseEntity.ok(new JwtResponse(jwt,
         userDetails.getId(),
@@ -127,6 +123,7 @@ public class AuthController {
     }
 
     user.setRoles(roles);
+    System.out.println(">>>>" + user);
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("Usuario registrado com sucesso!"));

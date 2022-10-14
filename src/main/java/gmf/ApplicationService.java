@@ -2,16 +2,13 @@ package gmf;
 
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +25,6 @@ import gmf.repository.EventoRepository;
 import gmf.repository.PapelRepository;
 import gmf.repository.ProdutorRepository;
 import gmf.repository.UsuarioRepository;
-import gmf.security.jwt.JwtUtils;
 
 @Service
 public class ApplicationService implements ApplicationRunner {
@@ -65,7 +61,7 @@ public class ApplicationService implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Usuario usuarioAdmin = new Usuario("guiadmin", "gui@puc.com", encoder.encode("123456"), true);
+
         Papel p1 = new Papel(EPapel.PAPEL_ADMIN);
         Papel p2 = new Papel(EPapel.PAPEL_ESPECTADOR);
         Papel p3 = new Papel(EPapel.PAPEL_PRODUTOR);
@@ -73,6 +69,8 @@ public class ApplicationService implements ApplicationRunner {
         papelRepository.save(p1);
         papelRepository.save(p2);
         papelRepository.save(p3);
+
+        Usuario usuarioAdmin = new Usuario("guiadmin", "gui@puc.com", encoder.encode("123456"), true);
 
         Set<Papel> listaPapel = Set.of(p1, p2, p3);
         usuarioAdmin.setRoles(listaPapel);
@@ -94,7 +92,16 @@ public class ApplicationService implements ApplicationRunner {
         endereco.cidade = "Jaboatão";
         endereco.estado = "NI";
 
+        Endereco endereco2 = new Endereco();
+        endereco2.nomeRua = "Afonso Pena Jr";
+        endereco2.numero = "2300";
+        endereco2.complemento = "";
+        endereco2.bairro = "Guaratins";
+        endereco2.cidade = "Renova";
+        endereco2.estado = "PS";
+
         enderecoRepository.save(endereco);
+        enderecoRepository.save(endereco2);
 
         Espectador espectador = new Espectador();
         espectador.nome = "Cajauino Oliveira";
@@ -156,17 +163,17 @@ public class ApplicationService implements ApplicationRunner {
         Evento evento2 = new Evento();
         evento2.nomeEvento = "Noite do Sinal";
         evento2.nomeLocalEvento = "Boate Juizado Final";
-        evento2.endereco = endereco;
-        evento2.dataEvento = "31/10/2022";
-        evento2.horarioEvento = "10:00";
+        evento2.endereco = endereco2;
+        evento2.dataEvento = "02/01/2022";
+        evento2.horarioEvento = "23:50";
         evento2.quantidadeEspectadoresEsperada = 300;
 
         Evento evento3 = new Evento();
         evento3.nomeEvento = "Bailão Sertanejo";
         evento3.nomeLocalEvento = "Espaço Fenix";
         evento3.endereco = endereco;
-        evento3.dataEvento = "31/10/2022";
-        evento3.horarioEvento = "10:00";
+        evento3.dataEvento = "09/05/2022";
+        evento3.horarioEvento = "22:00";
         evento3.quantidadeEspectadoresEsperada = 8500;
 
         Evento evento4 = new Evento();
@@ -174,15 +181,15 @@ public class ApplicationService implements ApplicationRunner {
         evento4.nomeLocalEvento = "Sitio Espolio";
         evento4.endereco = endereco;
         evento4.dataEvento = "31/10/2022";
-        evento4.horarioEvento = "10:00";
+        evento4.horarioEvento = "08:00";
         evento4.quantidadeEspectadoresEsperada = 200;
 
         Evento evento5 = new Evento();
-        evento5.nomeEvento = "Jornada ecumênica";
-        evento5.nomeLocalEvento = "Sitio Espolio";
+        evento5.nomeEvento = "Desfile Animal";
+        evento5.nomeLocalEvento = "Espaço Clean";
         evento5.endereco = endereco;
-        evento5.dataEvento = "31/10/2022";
-        evento5.horarioEvento = "10:00";
+        evento5.dataEvento = "26/10/2022";
+        evento5.horarioEvento = "13:00";
         evento5.produtor = produtor;
         evento5.espectadores = List.of(espectador4);
         evento5.quantidadeEspectadoresEsperada = 200;
