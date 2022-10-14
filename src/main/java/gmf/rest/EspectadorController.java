@@ -1,13 +1,11 @@
 package gmf.rest;
 
-import org.hibernate.event.spi.EventSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import gmf.model.Espectador;
-import gmf.model.Usuario;
 import gmf.repository.EspectadorRepository;
 import gmf.repository.UsuarioRepository;
 

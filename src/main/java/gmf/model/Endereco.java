@@ -1,5 +1,6 @@
 package gmf.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,10 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Endereco {
+public class Endereco implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

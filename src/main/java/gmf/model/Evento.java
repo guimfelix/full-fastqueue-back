@@ -1,5 +1,6 @@
 package gmf.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,11 +15,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
 @Data
-public class Evento {
+public class Evento implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -27,10 +31,12 @@ public class Evento {
     public String horarioEvento;
     public String nomeLocalEvento;
     public Integer quantidadeEspectadoresEsperada;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     public Endereco endereco;
+    @JsonIgnore
     @ManyToOne
     public Produtor produtor;
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(mappedBy = "eventos")
     public List<Espectador> espectadores;
 }
