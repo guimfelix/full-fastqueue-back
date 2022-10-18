@@ -45,12 +45,6 @@ public class EspectadorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Espectador não encontrado"));
     }
 
-    @GetMapping("usuario/{id}")
-    public Espectador acharIdUsuarioPorId(@PathVariable Long id) {
-        System.out.println(">>>>> usuario");
-        return espectadorDao.buscaEspectadorPorUsuarioId(id);
-    }
-
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id) {

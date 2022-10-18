@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@ToString(exclude = "details")
 public class Produtor implements Serializable {
 
     private static final long serialVersionUID = 1L;

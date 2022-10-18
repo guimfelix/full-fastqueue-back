@@ -18,9 +18,11 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 public class Espectador implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +35,7 @@ public class Espectador implements Serializable {
     public Endereco endereco;
     @JsonIgnore
     @ManyToMany
+    @ToString.Exclude
     public List<Evento> eventos = new ArrayList<>();
     public String papel = "USER";
     @OneToOne(cascade = CascadeType.DETACH)

@@ -1,10 +1,12 @@
 package gmf.rest;
 
 import gmf.model.Evento;
+import gmf.payload.response.MessageResponse;
 import gmf.repository.EventoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,6 +34,19 @@ public class EventoController {
     @ResponseStatus(HttpStatus.CREATED)
     public Evento salvar(@RequestBody @Valid Evento evento) {
         return repository.save(evento);
+    }
+
+    // fazer no service do evento de front tb
+    @GetMapping("/busca")
+    public ResponseEntity<?> buscaEvento(@Valid @RequestBody String nomeEvento) {
+        List<Evento> lista = repository.findByNomeEvento("%" + nomeEvento + "%");
+        // System.out.println(">>>> lista" + lista);
+        if (lista.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Não foi encontrado resultados com esse nome"));
+        }
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("{id}")

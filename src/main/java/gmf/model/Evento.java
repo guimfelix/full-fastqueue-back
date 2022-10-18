@@ -18,9 +18,11 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 public class Evento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,6 +39,7 @@ public class Evento implements Serializable {
     @ManyToOne
     public Produtor produtor;
     @JsonIgnore
-    @ManyToMany(mappedBy = "eventos")
+    @ManyToMany
+    // @ToString.Exclude
     public List<Espectador> espectadores;
 }

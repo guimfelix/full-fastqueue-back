@@ -161,7 +161,7 @@ public class ApplicationService implements ApplicationRunner {
         evento1.quantidadeEspectadoresEsperada = 1000;
 
         Evento evento2 = new Evento();
-        evento2.nomeEvento = "Noite do Sinal";
+        evento2.nomeEvento = "Festa da Noite do Sinal";
         evento2.nomeLocalEvento = "Boate Juizado Final";
         evento2.endereco = endereco2;
         evento2.dataEvento = "02/01/2022";
