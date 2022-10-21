@@ -7,7 +7,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import gmf.dao.EspectadorDao;
 import gmf.model.Espectador;
+import gmf.model.Evento;
 import gmf.repository.EspectadorRepository;
+import gmf.repository.UsuarioRepository;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,14 +24,24 @@ public class EspectadorController {
     @Autowired
     private final EspectadorRepository repository;
 
-    public EspectadorController(EspectadorDao espectadorDao, EspectadorRepository repository) {
+    @Autowired
+    private final UsuarioRepository usuarioRepository;
+
+    public EspectadorController(EspectadorDao espectadorDao, EspectadorRepository repository,
+            UsuarioRepository usuarioRepository) {
         this.repository = repository;
         this.espectadorDao = espectadorDao;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping
     public List<Espectador> obterTodos() {
         return repository.findAll();
+    }
+
+    @GetMapping("usuario/{id}")
+    public Espectador obterPorUsuario(@PathVariable Long id) {
+        return repository.findByUsuario(usuarioRepository.findById(id).orElseThrow());
     }
 
     @PostMapping

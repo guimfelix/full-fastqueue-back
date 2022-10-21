@@ -2,6 +2,7 @@ package gmf.rest;
 
 import gmf.model.Produtor;
 import gmf.repository.ProdutorRepository;
+import gmf.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,22 @@ import java.util.List;
 public class ProdutorController {
 
     private final ProdutorRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
-    public ProdutorController(ProdutorRepository repository) {
+    public ProdutorController(ProdutorRepository repository, UsuarioRepository usuarioRepository) {
         this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping
     public List<Produtor> obterTodos() {
         return repository.findAll();
+    }
+
+    @GetMapping("usuario/{id}")
+    public Produtor obterPorUsuario(@PathVariable Long id) {
+        return repository.findByUsuario(usuarioRepository.findById(id).orElseThrow());
     }
 
     @PostMapping
