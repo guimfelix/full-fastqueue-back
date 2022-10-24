@@ -33,11 +33,4 @@ public class EspectadorDao {
         return repository.save(espectador);
     }
 
-    @Transactional
-    public Espectador buscaEspectadorPorUsuarioId(Long id) {
-        // Usuario user = usuarioRepository.findById(id).orElseThrow();
-        System.out.println(">>>>> usuario");
-        return repository.findByUsuario(id);
-    }
-
 }
