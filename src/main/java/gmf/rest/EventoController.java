@@ -1,7 +1,9 @@
 package gmf.rest;
 
+import gmf.model.Espectador;
 import gmf.model.Evento;
 import gmf.payload.response.MessageResponse;
+import gmf.repository.EspectadorRepository;
 import gmf.repository.EventoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,12 @@ public class EventoController {
 
     private final EventoRepository repository;
 
+    private final EspectadorRepository espectadorRepository;
+
     @Autowired
-    public EventoController(EventoRepository repository) {
+    public EventoController(EventoRepository repository, EspectadorRepository espectadorRepository) {
         this.repository = repository;
+        this.espectadorRepository = espectadorRepository;
     }
 
     @GetMapping
@@ -36,17 +41,21 @@ public class EventoController {
         return repository.save(evento);
     }
 
-    // fazer no service do evento de front tb
     @GetMapping("/busca")
-    public ResponseEntity<?> buscaEvento(@Valid @RequestBody String nomeEvento) {
-        List<Evento> lista = repository.findByNomeEvento("%" + nomeEvento + "%");
-        // System.out.println(">>>> lista" + lista);
+    public ResponseEntity<?> buscaEvento(
+            @RequestParam(value = "nomeEvento", required = false, defaultValue = " ") String nomeEvento) {
+        List<Evento> lista = repository.findByNomeDoEvento("%" + nomeEvento + "%");
         if (lista.isEmpty()) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Não foi encontrado resultados com esse nome"));
         }
         return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/{id}/espectadores")
+    public List<Espectador> espectadoresDoEvento(@PathVariable Long id) {
+        return espectadorRepository.findEspectadorByEventosId(id);
     }
 
     @GetMapping("{id}")
@@ -84,5 +93,16 @@ public class EventoController {
                     return repository.save(evento);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento não encontrado"));
+    }
+
+    @PutMapping("{id}/vincular")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void vinculaEspectador(@PathVariable Long id, @RequestBody @Valid Espectador espectador) {
+
+        repository.findById(id)
+                .map(evento -> {
+                    evento.espectadores.add(espectador);
+                    return repository.save(evento);
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento não encontrado"));
     }
 }

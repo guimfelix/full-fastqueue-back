@@ -7,7 +7,10 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,7 +31,7 @@ public class Produtor implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "produtor_id")
-    public List<Evento> eventos;
+    public List<Evento> eventos = new ArrayList<>();
     public String papel = "GERENTE";
 
     @OneToOne(cascade = CascadeType.DETACH)

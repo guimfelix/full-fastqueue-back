@@ -123,7 +123,6 @@ public class AuthController {
     }
 
     user.setRoles(roles);
-    System.out.println(">>>>" + user);
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("Usuario registrado com sucesso!"));

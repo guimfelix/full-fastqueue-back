@@ -1,6 +1,8 @@
 package gmf.rest;
 
+import gmf.model.Evento;
 import gmf.model.Produtor;
+import gmf.repository.EventoRepository;
 import gmf.repository.ProdutorRepository;
 import gmf.repository.UsuarioRepository;
 
@@ -19,11 +21,14 @@ public class ProdutorController {
 
     private final ProdutorRepository repository;
     private final UsuarioRepository usuarioRepository;
+    private final EventoRepository eventoRepository;
 
     @Autowired
-    public ProdutorController(ProdutorRepository repository, UsuarioRepository usuarioRepository) {
+    public ProdutorController(ProdutorRepository repository, UsuarioRepository usuarioRepository,
+            EventoRepository eventoRepository) {
         this.repository = repository;
         this.usuarioRepository = usuarioRepository;
+        this.eventoRepository = eventoRepository;
     }
 
     @GetMapping
@@ -34,6 +39,11 @@ public class ProdutorController {
     @GetMapping("usuario/{id}")
     public Produtor obterPorUsuario(@PathVariable Long id) {
         return repository.findByUsuario(usuarioRepository.findById(id).orElseThrow());
+    }
+
+    @GetMapping("{id}/eventos")
+    public List<Evento> listaEventos(@PathVariable Long id) {
+        return eventoRepository.findEventosByProdutorId(id);
     }
 
     @PostMapping

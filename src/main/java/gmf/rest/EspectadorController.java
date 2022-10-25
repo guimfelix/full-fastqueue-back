@@ -9,6 +9,7 @@ import gmf.dao.EspectadorDao;
 import gmf.model.Espectador;
 import gmf.model.Evento;
 import gmf.repository.EspectadorRepository;
+import gmf.repository.EventoRepository;
 import gmf.repository.UsuarioRepository;
 
 import javax.validation.Valid;
@@ -23,15 +24,18 @@ public class EspectadorController {
     private final EspectadorDao espectadorDao;
     @Autowired
     private final EspectadorRepository repository;
+    @Autowired
+    private final EventoRepository eventoRepository;
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
 
     public EspectadorController(EspectadorDao espectadorDao, EspectadorRepository repository,
-            UsuarioRepository usuarioRepository) {
+            UsuarioRepository usuarioRepository, EventoRepository eventoRepository) {
         this.repository = repository;
         this.espectadorDao = espectadorDao;
         this.usuarioRepository = usuarioRepository;
+        this.eventoRepository = eventoRepository;
     }
 
     @GetMapping
@@ -42,6 +46,11 @@ public class EspectadorController {
     @GetMapping("usuario/{id}")
     public Espectador obterPorUsuario(@PathVariable Long id) {
         return repository.findByUsuario(usuarioRepository.findById(id).orElseThrow());
+    }
+
+    @GetMapping("{id}/eventos")
+    public List<Evento> obterEventosDeEspectador(@PathVariable Long id) {
+        return eventoRepository.findEventosByEspectadoresId(id);
     }
 
     @PostMapping
@@ -83,4 +92,17 @@ public class EspectadorController {
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Espectador não encontrado"));
     }
+
+    @PutMapping("{id}/vincular")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void vinculaEvento(@PathVariable Long id, @RequestBody @Valid Evento evento) {
+        Evento e = eventoRepository.findById(evento.id).orElseThrow();
+        repository.findById(id)
+                .map(espectador -> {
+                    espectador.eventos.add(e);
+                    return repository.save(espectador);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Espectador não encontrado"));
+    }
+
 }

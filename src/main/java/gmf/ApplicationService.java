@@ -191,7 +191,7 @@ public class ApplicationService implements ApplicationRunner {
         evento5.dataEvento = "26/10/2022";
         evento5.horarioEvento = "13:00";
         evento5.produtor = produtor;
-        evento5.espectadores = List.of(espectador4);
+        evento5.espectadores = List.of(espectador4, espectador);
         evento5.quantidadeEspectadoresEsperada = 200;
 
         // persiste com produtor
@@ -213,6 +213,11 @@ public class ApplicationService implements ApplicationRunner {
         // atualiza evento2 com lista de espectadores
         evento2.espectadores = listaEspectadores;
         eventoRepository.save(evento2);
+
+        espectador.eventos = listaEventos;
+        espectadorRepository.save(espectador);
+        espectador3.eventos = listaEventos;
+        espectadorRepository.save(espectador3);
 
         // atualiza produtor evento
         evento4.produtor = produtor1;

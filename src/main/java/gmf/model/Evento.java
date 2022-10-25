@@ -1,15 +1,12 @@
 package gmf.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,6 +33,6 @@ public class Evento implements Serializable {
     public Produtor produtor;
     @JsonIgnore
     @ManyToMany
-    // @ToString.Exclude
-    public List<Espectador> espectadores;
+
+    public List<Espectador> espectadores = new ArrayList<>();
 }

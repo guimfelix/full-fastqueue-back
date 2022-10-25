@@ -12,6 +12,11 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     // @Query(value = "select e from evento e where ( e.nomeEvento ) like ( :nome
     // )")
-    List<Evento> findByNomeEvento(String nomeEvento);
+    @Query("SELECT e FROM Evento e WHERE UPPER( e.nomeEvento ) LIKE UPPER( :nomeEvento ) ")
+    List<Evento> findByNomeDoEvento(@Param("nomeEvento") String nomeEvento);
+
+    List<Evento> findEventosByEspectadoresId(Long espectadorId);
+
+    List<Evento> findEventosByProdutorId(Long produtorId);
 
 }
