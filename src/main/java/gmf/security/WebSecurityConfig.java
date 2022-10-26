@@ -63,7 +63,7 @@ public class WebSecurityConfig {
         .authorizeRequests()
         .antMatchers("/api/auth/**").permitAll()
         .antMatchers("/api/test/**").permitAll()
-        .antMatchers("/api/eventos").permitAll()
+        .antMatchers("/api/eventos/**").permitAll()
         .anyRequest().authenticated();
 
     http.authenticationProvider(authenticationProvider());
