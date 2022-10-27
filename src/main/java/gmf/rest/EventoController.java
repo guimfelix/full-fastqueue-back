@@ -58,6 +58,11 @@ public class EventoController {
         return espectadorRepository.findEspectadorByEventosId(id);
     }
 
+    @GetMapping("/{id}/produtores")
+    public List<Evento> eventosDoProdutor(@PathVariable Long id) {
+        return repository.findEventosByProdutorId(id);
+    }
+
     @GetMapping("{id}")
     public Evento acharPorId(@PathVariable Long id) {
         return repository
