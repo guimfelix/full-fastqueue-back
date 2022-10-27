@@ -26,7 +26,7 @@ public class Evento implements Serializable {
     public String horarioEvento;
     public String nomeLocalEvento;
     public Integer quantidadeEspectadoresEsperada;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public Endereco endereco;
     @JsonIgnore
     @ManyToOne
