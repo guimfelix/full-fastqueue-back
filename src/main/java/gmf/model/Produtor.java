@@ -25,7 +25,7 @@ public class Produtor implements Serializable {
     public String nome;
     public String dataNascimento;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.DETACH)
     public Endereco endereco;
 
     @JsonIgnore

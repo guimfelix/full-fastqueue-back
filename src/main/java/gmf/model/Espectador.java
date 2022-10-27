@@ -32,7 +32,7 @@ public class Espectador implements Serializable {
     public Long id;
     public String nome;
     public String dataNascimento;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     public Endereco endereco;
     @JsonIgnore
     @ManyToMany
