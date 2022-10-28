@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import gmf.dao.EspectadorDao;
 import gmf.model.Espectador;
 import gmf.model.Evento;
+import gmf.model.Usuario;
 import gmf.repository.EnderecoRepository;
 import gmf.repository.EspectadorRepository;
 import gmf.repository.EventoRepository;
@@ -61,8 +62,11 @@ public class EspectadorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Espectador salvar(@RequestBody @Valid Espectador espectador) {
+        Usuario user = usuarioRepository.findById(espectador.getUsuario().getId()).orElseThrow();
+        user.setIsCadastrado(true);
+        usuarioRepository.save(user);
         enderecoRepository.save(espectador.endereco);
-        return espectadorDao.salvarEspectador(espectador);
+        return repository.save(espectador);
     }
 
     @GetMapping("{id}")
