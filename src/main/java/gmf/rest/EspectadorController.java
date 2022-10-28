@@ -62,10 +62,6 @@ public class EspectadorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Espectador salvar(@RequestBody @Valid Espectador espectador) {
-        Usuario user = usuarioRepository.findById(espectador.getUsuario().getId()).orElseThrow();
-        user.setIsCadastrado(true);
-        System.out.println(">>>>> vai salvar usuario");
-        usuarioRepository.save(user);
         System.out.println(">>>>> vai salvar endereco");
         enderecoRepository.save(espectador.endereco);
         System.out.println(">>>>> vai salvar espectador");
