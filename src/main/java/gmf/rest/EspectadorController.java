@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import gmf.dao.EspectadorDao;
 import gmf.model.Espectador;
 import gmf.model.Evento;
+import gmf.repository.EnderecoRepository;
 import gmf.repository.EspectadorRepository;
 import gmf.repository.EventoRepository;
 import gmf.repository.UsuarioRepository;
@@ -26,16 +27,20 @@ public class EspectadorController {
     private final EspectadorRepository repository;
     @Autowired
     private final EventoRepository eventoRepository;
+    @Autowired
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
 
     public EspectadorController(EspectadorDao espectadorDao, EspectadorRepository repository,
-            UsuarioRepository usuarioRepository, EventoRepository eventoRepository) {
+            UsuarioRepository usuarioRepository, EventoRepository eventoRepository,
+            EnderecoRepository enderecoRepository) {
         this.repository = repository;
         this.espectadorDao = espectadorDao;
         this.usuarioRepository = usuarioRepository;
         this.eventoRepository = eventoRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @GetMapping
@@ -56,6 +61,7 @@ public class EspectadorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Espectador salvar(@RequestBody @Valid Espectador espectador) {
+        enderecoRepository.save(espectador.endereco);
         return espectadorDao.salvarEspectador(espectador);
     }
 
@@ -88,6 +94,7 @@ public class EspectadorController {
                     espectador.setNome(espectadorAtualizado.getNome());
                     espectador.setDataNascimento(espectadorAtualizado.getDataNascimento());
                     espectador.setEndereco(espectadorAtualizado.getEndereco());
+                    enderecoRepository.save(espectador.endereco);
                     return repository.save(espectador);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Espectador não encontrado"));

@@ -2,6 +2,7 @@ package gmf.rest;
 
 import gmf.model.Evento;
 import gmf.model.Produtor;
+import gmf.repository.EnderecoRepository;
 import gmf.repository.EventoRepository;
 import gmf.repository.ProdutorRepository;
 import gmf.repository.UsuarioRepository;
@@ -22,13 +23,15 @@ public class ProdutorController {
     private final ProdutorRepository repository;
     private final UsuarioRepository usuarioRepository;
     private final EventoRepository eventoRepository;
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
     public ProdutorController(ProdutorRepository repository, UsuarioRepository usuarioRepository,
-            EventoRepository eventoRepository) {
+            EventoRepository eventoRepository, EnderecoRepository enderecoRepository) {
         this.repository = repository;
         this.usuarioRepository = usuarioRepository;
         this.eventoRepository = eventoRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @GetMapping
@@ -49,6 +52,7 @@ public class ProdutorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Produtor salvar(@RequestBody @Valid Produtor produtor) {
+        enderecoRepository.save(produtor.endereco);
         return repository.save(produtor);
     }
 
@@ -81,6 +85,7 @@ public class ProdutorController {
                     produtor.setNome(produtorAtualizado.getNome());
                     produtor.setDataNascimento(produtorAtualizado.getDataNascimento());
                     produtor.setEndereco(produtorAtualizado.getEndereco());
+                    enderecoRepository.save(produtor.endereco);
                     return repository.save(produtor);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produtor não encontrado"));

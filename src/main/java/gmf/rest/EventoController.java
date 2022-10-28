@@ -3,6 +3,7 @@ package gmf.rest;
 import gmf.model.Espectador;
 import gmf.model.Evento;
 import gmf.payload.response.MessageResponse;
+import gmf.repository.EnderecoRepository;
 import gmf.repository.EspectadorRepository;
 import gmf.repository.EventoRepository;
 
@@ -24,10 +25,14 @@ public class EventoController {
 
     private final EspectadorRepository espectadorRepository;
 
+    private final EnderecoRepository enderecoRepository;
+
     @Autowired
-    public EventoController(EventoRepository repository, EspectadorRepository espectadorRepository) {
+    public EventoController(EventoRepository repository, EspectadorRepository espectadorRepository,
+            EnderecoRepository enderecoRepository) {
         this.repository = repository;
         this.espectadorRepository = espectadorRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @GetMapping
@@ -38,6 +43,7 @@ public class EventoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Evento salvar(@RequestBody @Valid Evento evento) {
+        enderecoRepository.save(evento.endereco);
         return repository.save(evento);
     }
 
@@ -95,6 +101,7 @@ public class EventoController {
                     evento.setNomeEvento(eventoAtualizado.getNomeEvento());
                     evento.setNomeLocalEvento(eventoAtualizado.getNomeLocalEvento());
                     evento.setQuantidadeEspectadoresEsperada(eventoAtualizado.getQuantidadeEspectadoresEsperada());
+                    enderecoRepository.save(evento.endereco);
                     return repository.save(evento);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento não encontrado"));
